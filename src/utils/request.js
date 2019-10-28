@@ -48,7 +48,6 @@ service.interceptors.response.use(
     response.status = data.status;
     response.statusText = data.message;
     response.data = data.data;
-
     if (data.status !== 200) {
       Message({
         message: data.message,
@@ -82,8 +81,9 @@ export function post(url,data){
 }
 //自定义get
 export function get(url){
-  return service.get(url,{
+  return service.get(url,data,{
     timeout:10000,
+    params:data,
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

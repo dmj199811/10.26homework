@@ -4,26 +4,26 @@ import {post,post_array} from '@/utils/request'
 export default {
   namespaced:true,
   state:{
-    customers:[],
+    waiters:[],
     visible:false,
     title:"添加顾客信息",
     loading:false,
     orderDatas:[]
   },
   getters:{
-    customerSize(state){
-      return state.customers.length;
+    waiterSize(state){
+      return state.waiters.length;
     },
-    orderCustomer:(state)=>{
+    orderWaiter:(state)=>{
       return function(flag){
-        state.customers.sort((a,b)=>{
+        state.waiters.sort((a,b)=>{
           if(a[flag] > b[flag]){
             return -1;
           } else {
             return 1;
           }
         })
-        return state.customers;
+        return state.waiters;
       }
     }
   },
@@ -34,8 +34,8 @@ export default {
     closeModal(state){
       state.visible = false;
     },
-    refreshCustomers(state,customers){
-      state.customers = customers;
+    refreshWaiters(state,waiters){
+      state.waiters = waiters;
     },
     setTitle(state,title){
       state.title = title;
@@ -52,23 +52,23 @@ export default {
     },
     filterData1(state,id){
       data = state.orderDatas.filter(function(item){
-        return item.customerId=id
+        return item.waiterId=id
       })
       state.orderDatas = data
     },
   },
   actions:{
-    async batchDeleteCustomer(context,ids){
+    async batchDeleteWaiter(context,ids){
       // 1. 批量删除
-      let response = await post_array("/customer/batchDelete",{ids})
+      let response = await post_array("/waiter/batchDelete",{ids})
       // 2. 分发
-      context.dispatch("findAllCustomers");
+      context.dispatch("findAllWaiters");
       // 3. 返回结果
       return response;
     },
-    async deleteCustomerById(context,id){
-      let response = await request.get("/customer/deleteById?id="+id);
-      context.dispatch("findAllCustomers");
+    async deleteWaiterById(context,id){
+      let response = await request.get("/waiter/deleteById?id="+id);
+      context.dispatch("findAllWaiters");
       return response;
     },
     async findAllOrders(context,id){
@@ -78,22 +78,22 @@ export default {
       context.commit("refreshOrders1",response.data);
       context.commit("filterData1",id)
     },
-    async findAllCustomers({dispatch,commit}){
+    async findAllWaiters({dispatch,commit}){
       // 1. ajax查询
       commit("beginLoading");
-      let response = await request.get("/customer/findAll");
+      let response = await request.get("/waiter/findAll");
       // 2. 将查询结果更新到state中
-      commit("refreshCustomers",response.data);
+      commit("refreshWaiters",response.data);
       setTimeout(()=>{
         commit("endLoading")
       },1000)
     },
     // payload 顾客信息
-    async saveOrUpdateCustomer({commit,dispatch},payload){
+    async saveOrUpdateWaiter({commit,dispatch},payload){
       // 1. 保存或更新
-      let response = await post("/customer/saveOrUpdate",payload)
+      let response = await post("/waiter/saveOrUpdate",payload)
       // 2. 刷新页面
-      dispatch("findAllCustomers");
+      dispatch("findAllWaiters");
       // 3. 关闭模态框
       commit("closeModal");
       // 4. 提示

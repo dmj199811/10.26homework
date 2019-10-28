@@ -72,6 +72,7 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
+        hidden:true,
         name: 'Dashboard',
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
@@ -85,6 +86,7 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/profile/index'),
+        hidden:true,
         name: 'Profile',
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
@@ -115,7 +117,20 @@ export const asyncRoutes = [
         meta: { title: '顾客详情', icon: 'tab' }
       }
     ]
-  } ,
+  },
+  {
+    path: '/order',
+    component: Layout,
+    children: [
+      {
+        path: 'order',
+        component: () => import('@/pages/order/Order'),
+        name: 'order',
+        meta: { title: '订单管理', icon: 'edit' }
+      },
+      
+    ]
+  },
   {
     path: '/check',
     component: Layout,
@@ -135,19 +150,7 @@ export const asyncRoutes = [
       }
     ]
   } ,
-  {
-    path: '/order',
-    component: Layout,
-    children: [
-      {
-        path: 'order',
-        component: () => import('@/pages/order/Order'),
-        name: 'order',
-        meta: { title: '订单审核', icon: 'edit' }
-      },
-      
-    ]
-  } ,
+  
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

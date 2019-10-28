@@ -74,7 +74,8 @@ export default {
       // this.$router.push("/customerDetails")
       this.$router.push({
         path:"/customer/details",
-        query:{id:customer.id}
+        query:{id:customer.id,telephone:customer.telephone,password:customer.password,
+        realname:customer.realname,status:customer.status,photo:customer.photo}
       })
     },
     handleSelectionChange(val) {
